@@ -112,7 +112,7 @@ kubectl delete pod <pod-name>
 
 </p>
 
-<summary>How to create the pod using kubernetes tempalte yaml ?</summary>
+<summary>How to create the pod using kubernetes template yaml ?</summary>
 <p>
   
 ```
@@ -148,3 +148,31 @@ kubectl get pod <pod-name> -o wide
 
 </p>
 
+## Kubernetes Deployment
+
+<summary>How to create a deployment using kubernetes template yaml ?</summary>
+<p>
+  
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    apps: nginx
+spec:
+  replicas: 2
+  selector:
+   matchLabels:
+     app: nginx
+   template:
+     metadata:
+       labels:
+         apps: nginx
+     spec:
+       containers:
+       - name: nginx-pod
+         image: nginx:latest
+         ports:
+         - containerPort: 80
+```
