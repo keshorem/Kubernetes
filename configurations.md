@@ -70,3 +70,34 @@ kubectl describe cm <configmap-name>
 
 ```
 </p>
+
+<summary>Create configmap and volume. The volume should read data from confimap in a specified path  ?</summary>
+<p>
+
+```
+kubectl create cm <configmap-name> --from-literal=key=value
+
+Make volume read the values from configmap
+
+apiVersion: v1
+kind: pod
+metadata:
+  Labels:
+    app: nginx-pod
+spec:
+  volumes:
+  - name: config-volume
+    configMap:
+       name: cfgVolume
+  containers:
+  - name: nginx-pod
+    image: nginx:latest
+    volumeMounts:
+    - name: config-volume
+      mountPath: /etc/cfg
+
+ Create a pod with the above created yaml
+ kubectl create -f nginx-pod.yaml
+ 
+```
+</p>
