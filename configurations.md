@@ -101,3 +101,39 @@ spec:
  
 ```
 </p>
+
+## kubernetes security context
+kubernetes security context defines the priviledge and access control settings for a pod or a container. It allows to set a specific level of permission for a pod or a container. The permissions are limited to certain level. Some of the permission that can be changed are,
+
+1. Changing the user ID or the group ID
+2. Linux capabilities ( Giving priviledges to the process )
+
+<summary>Create a pod and add a security context at a pod level for user and group with a sleep of 1200 seconds ?</summary>
+<p>
+
+```
+kubectl run nginx --image=nginx --restart=Never -- /bin/sh -c "sleep 1200;" -o yaml > nginx-pod.yaml
+Open the saved yaml file and check whether we have contents
+cat nginx-pod.yaml
+
+Changes to be made on yaml to add the security context
+
+apiVersion: v1
+kind: Pod
+metadata:
+  Labels:
+    app: nginx-pod
+spec:
+  securityContext:
+    runAsUser: 100
+    runAsGroup: 200
+  containers:
+  - name: nginx-pod
+    image: nginx
+
+Delete the already created pod and recreate the pod again
+
+kubectl create -f nginx-pod.yaml
+
+```
+</p>
