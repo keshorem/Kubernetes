@@ -203,6 +203,80 @@ kubectl create -f nginx-pod.yaml
 ```
 </p>
 
+## kubernetes secrets
+A secret is an object which contains a small amount of sensitive data such as password, token or a key. secrets are similar to configmap which holds confidential data. Kubernetes secrets are by default unencrypted in the API's server underlying data store ( etcd ). Anyone who is having access to the API server can able to access the secrets which includes read and write permission.
+Whatever the secret we create it will be of type "opque" which is default secret type.
 
+<summary>Create a kubernetes secret which includes username and password ?</summary>
+<p>
 
+```
+kubectl create secret generic my-secret --from-literal=USERNAME=guest --from-literal=PASSWORD=guest
+kubectl get secret
+
+You can view the secrets through below command
+kubectl describe secret my-secret
+
+View the secrets created in various namespaces
+kubectl get secret --all-namespaces
+```
+</p>
+
+<summary>Create a kubernetes pod which reads data as a environment variable ?</summary>
+<p>
+
+```
+kubectl run nginx-pod --image=nginx --restart=Never -o yaml > nginx-secret.yaml
+kubectl get pod
+
+Edit the nginx-secret.yaml
+spec:
+- containers:
+   image: nginx
+   container: nginx:latest
+   env:
+   - name: USERNAME
+     valueFrom:
+       secretKeyFrom:
+          name: username
+          key: user
+
+Recreate the pod once to reflect the changes
+```
+</p>
+
+<summary>Create a kubernetes pod which loads the secret as environment variable ?</summary>
+<p>
+
+```
+kubectl run nginx-pod --image=nginx --restart=Never -o yaml > nginx-secret.yaml
+kubectl get pod
+
+Edit the nginx-secret.yaml
+spec:
+- containers:
+    name: nginx
+    image: nginx:latest
+    envFrom:
+       secretFrom:
+
+Recreate the pod once to reflect the changes
+```
+</p>
+
+<summary>How to create a kubernetes service account with the name guest ?</summary>
+<p>
+
+```
+kubernetes create sa guest
+```
+</p>
+
+<summary>How to list all the available kubernetes service account ?</summary>
+<p>
+
+```
+kubernetes get sa --all-namespaces
+```
+</p>
 
