@@ -138,6 +138,71 @@ kubectl create -f nginx-pod.yaml
 ```
 </p>
 
+<summary>Create a kubernetes pod and configure the pods with capabilities. Namely the NET_ADMIN and SYS_TIME ?</summary>
+<p>
+
+```
+kubectl run nginx --image=nginx --restart=Never -o yaml > nginx-capabilities.yaml
+
+spec:
+  containers:
+  - image: nginx
+    securityContext:
+     add: ["SYS_TIME", "NET_ADMIN"]
+
+Once you made the change in yaml, delete the pod and create the pod again
+
+kubectl create -f nginx-capabilities.yaml
+
+```
+</p>
+
+<summary>Create a kubernetes pod and configure memory request and limits ?</summary>
+<p>
+
+```
+kubectl run nginx-pod --image=nginx --restart=Never -o yaml > nginx-pod.yaml
+
+spec:
+  containers:
+  - image: nginx
+    container: nginx:latest
+    resources:
+       requests:
+          memory: 100Mi
+       limits:
+          memory: 200Mi
+
+Once you made the change in yaml, delete the pod and create the pod again
+
+kubectl create -f nginx-pod.yaml
+
+```
+</p>
+
+<summary>Create a kubernetes pod and configure CPU request and limits ?</summary>
+<p>
+
+```
+kubectl run nginx-pod --image=nginx --restart=Never -o yaml > nginx-pod.yaml
+
+spec:
+  containers:
+  - image: nginx
+    container: nginx:latest
+    resources:
+       requests:
+          cpu: 0.5
+       limits:
+          cpu: 1
+
+Once you made the change in yaml, delete the pod and create the pod again
+
+kubectl create -f nginx-pod.yaml
+
+```
+</p>
+
 ## kubernetes secrets
 A secret is an object which contains a small amount of sensitive data such as password, token or a key. secrets are similar to configmap which holds confidential data. Kubernetes secrets are by default unencrypted in the API's server underlying data store ( etcd ). Anyone who is having access to the API server can able to access the secrets which includes read and write permission.
 Whatever the secret we create it will be of type "opque" which is default secret type.
@@ -214,3 +279,4 @@ kubernetes create sa guest
 kubernetes get sa --all-namespaces
 ```
 </p>
+
