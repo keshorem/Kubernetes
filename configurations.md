@@ -137,3 +137,72 @@ kubectl create -f nginx-pod.yaml
 
 ```
 </p>
+
+<summary>Create a kubernetes pod and configure the pods with capabilities. Namely the NET_ADMIN and SYS_TIME ?</summary>
+<p>
+
+```
+kubectl run nginx --image=nginx --restart=Never -o yaml > nginx-capabilities.yaml
+
+spec:
+  containers:
+  - image: nginx
+    securityContext:
+     add: ["SYS_TIME", "NET_ADMIN"]
+
+Once you made the change in yaml, delete the pod and create the pod again
+
+kubectl create -f nginx-capabilities.yaml
+
+```
+</p>
+
+<summary>Create a kubernetes pod and configure memory request and limits ?</summary>
+<p>
+
+```
+kubectl run nginx-pod --image=nginx --restart=Never -o yaml > nginx-pod.yaml
+
+spec:
+  containers:
+  - image: nginx
+    container: nginx:latest
+    resources:
+       requests:
+          memory: 100Mi
+       limits:
+          memory: 200Mi
+
+Once you made the change in yaml, delete the pod and create the pod again
+
+kubectl create -f nginx-pod.yaml
+
+```
+</p>
+
+<summary>Create a kubernetes pod and configure CPU request and limits ?</summary>
+<p>
+
+```
+kubectl run nginx-pod --image=nginx --restart=Never -o yaml > nginx-pod.yaml
+
+spec:
+  containers:
+  - image: nginx
+    container: nginx:latest
+    resources:
+       requests:
+          cpu: 0.5
+       limits:
+          cpu: 1
+
+Once you made the change in yaml, delete the pod and create the pod again
+
+kubectl create -f nginx-pod.yaml
+
+```
+</p>
+
+
+
+
